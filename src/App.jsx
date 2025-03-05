@@ -3,13 +3,17 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Loginform from './components/Loginform'
 import Blogform from './components/Blogform'
+import Notification from './components/Notification'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 
 const App = () => {
+  //blog content state variable
   const [blogs, setBlogs] = useState([])
+
+  //login state variables
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -18,6 +22,10 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+
+  // Notification messages state variables
+  const [notification, setNotification] = useState(null)
+  const [category, setCategory] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -46,6 +54,11 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (error) {
+      setCategory('error')
+      setNotification('Wrong username or password')
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
       console.error(error)
     }
   }
@@ -63,25 +76,47 @@ const App = () => {
       url: url
     }
     const createdBlog = await blogService.addBlog(newBlog)
-    setBlogs(blogs.concat(createdBlog))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    if (createdBlog){
+      setBlogs(blogs.concat(createdBlog))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      setCategory('add')
+      setNotification(`A new blog ${createdBlog.title} by ${createdBlog.author} has been added`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
   }
 
   return (
     <div>
       {
         user===null
-          ? <Loginform 
-            handleLogin={handleLogin}
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword} 
-          />
+
+          ? <div>
+              <h2>log in to the application</h2>
+              <Notification 
+                message={notification} 
+                category={category} 
+              />
+              <Loginform 
+                handleLogin={handleLogin}
+                username={username}
+                setUsername={setUsername}
+                password={password}
+                setPassword={setPassword} 
+                category={category}
+                notification={notification} 
+              />
+          </div>
+
           : <div>
               <h2>Blogs</h2>
+              <Notification 
+                message={notification} 
+                category={category} 
+              />
               <div>
                 {user.name} is logged in
                 {' '}<button onClick={handleLogout}>logout</button>

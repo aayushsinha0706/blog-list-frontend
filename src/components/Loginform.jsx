@@ -8,7 +8,6 @@ const Loginform = ({
     return (
         <div>
             <form onSubmit={handleLogin}>
-                <h2>log in to the application</h2>
                 <div>
                     username
                     <input
