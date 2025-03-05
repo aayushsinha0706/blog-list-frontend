@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react'
 
 import Blog from './components/Blog'
 import Loginform from './components/Loginform'
-import BlogForm from './components/BlogForm'
+import Blogform from './components/Blogform'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Blogform from './components/BlogForm'
 
 
 const App = () => {
