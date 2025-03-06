@@ -102,6 +102,20 @@ const App = () => {
     }
   } 
 
+  const deleteBlog = async (id) => {
+    try {
+      const blog = blogs.find(blog => blog.id === id)
+      if ( window.confirm(`Remove ${blog.title} by ${blog.user.name}`)){
+        const statusCode = await blogService.deleteBlog(id)
+        statusCode === 204 
+          ? setBlogs(blogs.filter(blog => blog.id !== id))
+          : ''
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div>
       {
@@ -144,7 +158,13 @@ const App = () => {
                 </Togglable>
               </div>
               {blogs.map(blog => (
-                <Blog key={blog.id} blog={blog} likeBlog={() => likeBlog(blog.id)} />
+                <Blog 
+                  key={blog.id} 
+                  blog={blog} 
+                  likeBlog={() => likeBlog(blog.id)}
+                  deleteBlog={() => deleteBlog(blog.id)}
+                  user={user}
+                />
               ))}
             </div>
       }
