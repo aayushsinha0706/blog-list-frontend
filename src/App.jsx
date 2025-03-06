@@ -24,10 +24,18 @@ const App = () => {
   const [category, setCategory] = useState('')
 
   useEffect(() => {
-    blogService.getAll().then(blogs => {
-      setBlogs(blogs)
-    })
-  },[])
+    const fetchBlogs = async () => {
+      try{
+        const blogs = await blogService.getAll()
+        blogs.sort((a,b) => b.likes - a.likes)
+        setBlogs(blogs)
+      } catch {
+        setBlogs([])
+      }
+    }
+    fetchBlogs()
+  })
+
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedBlogAppUser')
