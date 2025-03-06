@@ -1,5 +1,5 @@
 import { useState } from 'react'
-const Blog = ({blog}) => {
+const Blog = ({blog, likeBlog}) => {
 
   const [view, setView] = useState(false)
   const blogStyle = {
@@ -26,7 +26,7 @@ const Blog = ({blog}) => {
                 <a href={blog.url}>{blog.url}</a>
                 <div>
                   likes: {blog.likes}
-                  <button>like</button>
+                  <button onClick={likeBlog}>like</button>
                 </div>
                 <div>
                   {blog.user.name}

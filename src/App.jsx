@@ -83,6 +83,17 @@ const App = () => {
     }
   }
 
+  const likeBlog = async (id) => {
+    const blog = blogs.find(blog => blog.id === id)
+    const likedBlog = {...blog, likes: blog.likes + 1}
+    try{
+      const updatedBlog = await blogService.likeBlog(id, likedBlog)
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog))
+    }catch (error) {
+      console.error(error)
+    }
+  } 
+
   return (
     <div>
       {
@@ -125,7 +136,7 @@ const App = () => {
                 </Togglable>
               </div>
               {blogs.map(blog => (
-                <Blog key={blog.id} blog={blog} />
+                <Blog key={blog.id} blog={blog} likeBlog={() => likeBlog(blog.id)} />
               ))}
             </div>
       }
