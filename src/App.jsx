@@ -19,11 +19,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  //New Blog form state variables
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
   // Notification messages state variables
   const [notification, setNotification] = useState(null)
   const [category, setCategory] = useState('')
@@ -69,8 +64,9 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (event) => {
-    event.preventDefault()
+  const createBlog = async ({
+    title, author, url
+  }) => {
     const newBlog = {
       title: title,
       author: author,
@@ -79,9 +75,6 @@ const App = () => {
     const createdBlog = await blogService.addBlog(newBlog)
     if (createdBlog){
       setBlogs(blogs.concat(createdBlog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
       setCategory('add')
       setNotification(`A new blog ${createdBlog.title} by ${createdBlog.author} has been added`)
       setTimeout(() => {
@@ -127,13 +120,7 @@ const App = () => {
               <div>
                 <Togglable buttonLabel='create new blog'>
                   <Blogform
-                    onSubmit={addBlog}
-                    title={title}
-                    setTitle={setTitle}
-                    author={author}
-                    setAuthor={setAuthor}
-                    url={url}
-                    setUrl={setUrl}  
+                    createBlog={createBlog}
                   />
                 </Togglable>
               </div>
