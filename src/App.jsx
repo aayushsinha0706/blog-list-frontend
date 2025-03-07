@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import Blog from './components/Blog'
 import Loginform from './components/Loginform'
@@ -14,14 +14,14 @@ const App = () => {
   //blog content state variable
   const [blogs, setBlogs] = useState([])
 
-  //login state variables
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  //user state variables
   const [user, setUser] = useState(null)
 
   // Notification messages state variables
   const [notification, setNotification] = useState(null)
   const [category, setCategory] = useState('')
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -46,8 +46,7 @@ const App = () => {
     }
   },[])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
+  const loginFunc = async ({username, password}) => {
     try {
       const user = await loginService.login({username, password})
       window.localStorage.setItem(
@@ -55,8 +54,6 @@ const App = () => {
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (error) {
       setCategory('error')
       setNotification('Wrong username or password')
@@ -80,6 +77,7 @@ const App = () => {
       author: author,
       url: url
     }
+    blogFormRef.current.toggleVisibility()
     const createdBlog = await blogService.addBlog(newBlog)
     if (createdBlog){
       setBlogs(blogs.concat(createdBlog))
@@ -116,6 +114,8 @@ const App = () => {
     }
   }
 
+  
+
   return (
     <div>
       {
@@ -129,13 +129,7 @@ const App = () => {
               />
               <Togglable buttonLabel='log in'>
                 <Loginform 
-                  handleLogin={handleLogin}
-                  username={username}
-                  setUsername={setUsername}
-                  password={password}
-                  setPassword={setPassword} 
-                  category={category}
-                  notification={notification} 
+                  loginFunc={loginFunc}
                 />
               </Togglable>
           </div>
@@ -151,7 +145,7 @@ const App = () => {
                 {' '}<button onClick={handleLogout}>logout</button>
               </div>
               <div>
-                <Togglable buttonLabel='create new blog'>
+                <Togglable buttonLabel='create new blog' ref={blogFormRef}>
                   <Blogform
                     createBlog={createBlog}
                   />
