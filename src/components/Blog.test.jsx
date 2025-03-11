@@ -51,7 +51,7 @@ describe('<Blog />', () => {
         expect(div).toHaveTextContent('Example User')
     })
 
-    test("If the like button is clicked twice, the event handler is called twice", async () => {
+    test("5.15 If the like button is clicked twice, the event handler is called twice", async () => {
         let user = userEvent.setup()
         const button = screen.getByText('view')
         await user.click(button)
