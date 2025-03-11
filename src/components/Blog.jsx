@@ -16,7 +16,7 @@ const Blog = ({blog, likeBlog, deleteBlog, user}) => {
   }
   
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className='blog'>
         {
           view
            ? <div>
