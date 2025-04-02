@@ -4,10 +4,12 @@ import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import stylisticJs from '@stylistic/eslint-plugin-js';
+import vitestGlobals from "eslint-config-vitest-globals/flat";
 
 
 export default [
   js.configs.recommended,
+  vitestGlobals(),
   { ignores: ['dist', 'node_modules', 'eslint.config.js', 'vite.config.js', '**/coverage/**'] },
   
   {

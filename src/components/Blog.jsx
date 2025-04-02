@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-const Blog = ({blog, likeBlog, deleteBlog, user}) => {
+const Blog = ({ blog, likeBlog, deleteBlog, user }) => {
 
   const [view, setView] = useState(false)
   const blogStyle = {
@@ -14,39 +14,39 @@ const Blog = ({blog, likeBlog, deleteBlog, user}) => {
   const toggleView = () => {
     setView(!view)
   }
-  
-    return (
-      <div style={blogStyle} className='blog' data-testid='blog'>
-        {
-          view
-           ? <div>
-                <div>
-                  {blog.title} {blog.author}
-                  <button onClick={toggleView}>Hide</button>
+
+  return (
+    <div style={blogStyle} className='blog' data-testid='blog'>
+      {
+        view
+          ? <div>
+            <div>
+              {blog.title} {blog.author}
+              <button onClick={toggleView}>Hide</button>
+            </div>
+            <a href={blog.url}>{blog.url}</a>
+            <div>
+              likes: {blog.likes}
+              <button onClick={likeBlog}>like</button>
+            </div>
+            <div>
+              {blog.user.name}
+            </div>
+            {
+              user.username === blog.user.username
+                ? <div>
+                  <button onClick={deleteBlog}>remove</button>
                 </div>
-                <a href={blog.url}>{blog.url}</a>
-                <div>
-                  likes: {blog.likes}
-                  <button onClick={likeBlog}>like</button>
-                </div>
-                <div>
-                  {blog.user.name}
-                </div>
-                {
-                  user.username === blog.user.username 
-                    ? <div>
-                        <button onClick={deleteBlog}>remove</button>
-                      </div>
-                    : ''
-                }
-              </div>
-            : <div>
-                <p>{blog.title}{' '}{blog.user.name}</p>
-                <button onClick={toggleView}>view</button>
-              </div>
-         }
-      </div>
-    )
+                : ''
+            }
+          </div>
+          : <div>
+            <p>{blog.title}{' '}{blog.user.name}</p>
+            <button onClick={toggleView}>view</button>
+          </div>
+      }
+    </div>
+  )
 }
 
 Blog.propTypes = {

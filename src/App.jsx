@@ -46,9 +46,9 @@ const App = () => {
     }
   },[])
 
-  const loginFunc = async ({username, password}) => {
+  const loginFunc = async ({ username, password }) => {
     try {
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
       )
@@ -91,21 +91,21 @@ const App = () => {
 
   const likeBlog = async (id) => {
     const blog = blogs.find(blog => blog.id === id)
-    const likedBlog = {...blog, likes: blog.likes + 1}
+    const likedBlog = { ...blog, likes: blog.likes + 1 }
     try{
       const updatedBlog = await blogService.likeBlog(id, likedBlog)
       setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog))
     }catch (error) {
       console.error(error)
     }
-  } 
+  }
 
   const deleteBlog = async (id) => {
     try {
       const blog = blogs.find(blog => blog.id === id)
       if ( window.confirm(`Remove ${blog.title} by ${blog.user.name}`)){
         const statusCode = await blogService.deleteBlog(id)
-        statusCode === 204 
+        statusCode === 204
           ? setBlogs(blogs.filter(blog => blog.id !== id))
           : ''
       }
@@ -114,7 +114,7 @@ const App = () => {
     }
   }
 
-  
+
 
   return (
     <div>
@@ -122,45 +122,45 @@ const App = () => {
         user===null
 
           ? <div>
-              <h2>log in to the application</h2>
-              <Notification 
-                message={notification} 
-                category={category} 
+            <h2>log in to the application</h2>
+            <Notification
+              message={notification}
+              category={category}
+            />
+            <Togglable buttonLabel='log in'>
+              <Loginform
+                loginFunc={loginFunc}
               />
-              <Togglable buttonLabel='log in'>
-                <Loginform 
-                  loginFunc={loginFunc}
-                />
-              </Togglable>
+            </Togglable>
           </div>
 
           : <div>
-              <h2>Blogs</h2>
-              <Notification 
-                message={notification} 
-                category={category} 
-              />
-              <div>
-                {user.name} is logged in
-                {' '}<button onClick={handleLogout}>logout</button>
-              </div>
-              <div>
-                <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-                  <Blogform
-                    createBlog={createBlog}
-                  />
-                </Togglable>
-              </div>
-              {blogs.map(blog => (
-                <Blog 
-                  key={blog.id} 
-                  blog={blog} 
-                  likeBlog={() => likeBlog(blog.id)}
-                  deleteBlog={() => deleteBlog(blog.id)}
-                  user={user}
-                />
-              ))}
+            <h2>Blogs</h2>
+            <Notification
+              message={notification}
+              category={category}
+            />
+            <div>
+              {user.name} is logged in
+              {' '}<button onClick={handleLogout}>logout</button>
             </div>
+            <div>
+              <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+                <Blogform
+                  createBlog={createBlog}
+                />
+              </Togglable>
+            </div>
+            {blogs.map(blog => (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                likeBlog={() => likeBlog(blog.id)}
+                deleteBlog={() => deleteBlog(blog.id)}
+                user={user}
+              />
+            ))}
+          </div>
       }
     </div>
 
