@@ -24,7 +24,8 @@ const Loginform = ({
                         name="username"
                         type="text"
                         value={username}
-                        onChange={({target}) => setUsername(target.value)} 
+                        onChange={({target}) => setUsername(target.value)}
+                        data-testid='username' 
                     />
                 </div>
                 <div>
@@ -34,6 +35,7 @@ const Loginform = ({
                         type="password"
                         value={password}
                         onChange={({target}) => setPassword(target.value)}
+                        data-testid='password' 
                     />
                 </div>
                 <button type="submit">login</button>

@@ -6,7 +6,7 @@ const Notification = ({message, category}) => {
 
     if (category === 'add') {
         return (
-            <div className='add'>
+            <div className='add' data-testid='message'>
               {message}
             </div>
         )
@@ -14,7 +14,7 @@ const Notification = ({message, category}) => {
 
     if (category === 'error') {
         return (
-            <div className='error'>
+            <div className='error' data-testid='message'>
               {message}
             </div>
         )

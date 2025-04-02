@@ -16,7 +16,7 @@ const Blog = ({blog, likeBlog, deleteBlog, user}) => {
   }
   
     return (
-      <div style={blogStyle} className='blog'>
+      <div style={blogStyle} className='blog' data-testid='blog'>
         {
           view
            ? <div>
